@@ -3,16 +3,16 @@ Sub cleanData()
 Dim startRange As Range, resultRange As Range, tmp As Variant, book As Object
 Dim sellerCodes As Range, idRange As Range, id As String, eventType As String, resultIDs As Range, resultNames As Range
 
-Set book = Application.Workbooks("POR-Rev2")
+Set book = Application.Workbooks("POR - Usage_Events_Table")
 
-Set startRange = book.Worksheets(1).Range("A2:A75")
-Set resultRange = book.Worksheets(1).Range("E2:E75")
+Set startRange = book.Worksheets(1).Range("A2:A203")
+Set resultRange = book.Worksheets(1).Range("G2:G203")
 
 Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
 Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
 
-Set resultIDs = book.Worksheets(1).Range("F2:F75")
-Set resultNames = book.Worksheets(1).Range("G2:G75")
+Set resultIDs = book.Worksheets(1).Range("H2:H203")
+Set resultNames = book.Worksheets(1).Range("I2:I203")
 
 For counter = 1 To startRange.Count
 
@@ -21,6 +21,7 @@ For counter = 1 To startRange.Count
     id = Trim(tmp(1))
     For Each cell In idRange
         If id = cell.Value Then
+            If InStr(resultNames(counter, 1).Offset(0, 4), "irishlife.ie") > 0 Then Exit For
             resultNames(counter, 1) = cell.Offset(0, 3)
             resultIDs(counter, 1) = cell.Offset(0, 1)
         End If
