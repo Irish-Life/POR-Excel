@@ -3,16 +3,16 @@ Sub cleanData()
 Dim startRange As Range, resultRange As Range, tmp As Variant, book As Object
 Dim sellerCodes As Range, idRange As Range, id As String, eventType As String, resultIDs As Range, resultNames As Range
 
-Set book = Application.Workbooks("POR - Usage_Events_Table")
+Set book = Application.Workbooks("Point-of-Retirement-Reporting")
 
 Set startRange = book.Worksheets(1).Range("A2:A203")
-Set resultRange = book.Worksheets(1).Range("G2:G203")
 
 Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
 Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
 
 Set resultIDs = book.Worksheets(1).Range("H2:H203")
 Set resultNames = book.Worksheets(1).Range("I2:I203")
+Set resultRange = book.Worksheets(1).Range("G2:G203")
 
 For counter = 1 To startRange.Count
 
@@ -47,3 +47,5 @@ Function parseDataString(inputData As String, delimiter As String) As String()
     parseDataString = returnVal
 
 End Function
+
+
