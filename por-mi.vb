@@ -5,14 +5,14 @@ Dim sellerCodes As Range, idRange As Range, id As String, eventType As String, r
 
 Set book = Application.Workbooks("Point-of-Retirement-Reporting")
 
-Set startRange = book.Worksheets(1).Range("A2:A203")
+Set startRange = Application.Workbooks("POR - Usage_Events_Table").Worksheets(1).Range("A2:A207")
 
 Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
 Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
 
-Set resultIDs = book.Worksheets(1).Range("H2:H203")
-Set resultNames = book.Worksheets(1).Range("I2:I203")
-Set resultRange = book.Worksheets(1).Range("G2:G203")
+Set resultIDs = book.Worksheets(1).Range("A2:A207")
+Set resultNames = book.Worksheets(1).Range("B2:B207")
+Set resultRange = book.Worksheets(1).Range("C2:D207")
 
 For counter = 1 To startRange.Count
 
@@ -21,7 +21,7 @@ For counter = 1 To startRange.Count
     id = Trim(tmp(1))
     For Each cell In idRange
         If id = cell.Value Then
-            If InStr(resultNames(counter, 1).Offset(0, 4), "irishlife.ie") > 0 Then Exit For
+            If InStr(idRange(counter, 1).Offset(0, 4), "irishlife.ie") > 0 Then Exit For
             resultNames(counter, 1) = cell.Offset(0, 3)
             resultIDs(counter, 1) = cell.Offset(0, 1)
         End If
@@ -29,6 +29,7 @@ For counter = 1 To startRange.Count
     Next cell
 
     resultRange(counter, 1) = id
+    resultRange(counter, 2) = Trim(tmp(0))
 Next counter
 
 Debug.Print "Finished!"
@@ -36,7 +37,7 @@ End Sub
 
 
 Function parseDataString(inputData As String, delimiter As String) As String()
-    Dim all As Variant, returnVal(3) As String
+    Dim all As Variant, returnVal(2) As String
 
     all = Split(inputData, delimiter)
 
