@@ -17,6 +17,7 @@ Sub cleanData()
     Dim resultEventLabels As Range
     Dim resultSegments As Range
     Dim resultEventTotals As Range
+    Dim resultEmails As Range
 
 
     ' Initialise variables
@@ -31,6 +32,7 @@ Sub cleanData()
     Set resultEventLabels = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("D2:D316")
     Set resultSegments = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("E2:E316")
     Set resultEventTotals = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("F2:F316")
+    Set resultEmails = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("G2:G316")
 
     ' Main loop
     For counter = 1 To startRange.Count
@@ -44,19 +46,18 @@ Sub cleanData()
         segment = Trim(tmp(2))
         eventTotal = startRange(counter, 1).Offset(0, 4)
 
+
         For Each cell In idRange
             If id = cell.Value Then
-                email = idRange(counter, 1).Offset(0, 4)
-                If InStr(email, "irishlife.ie") > 0 Then Exit For
-
                 resultNames(counter, 1) = cell.Offset(0, 3)
                 resultIDs(counter, 1) = cell.Offset(0, 1)
                 resultSellerCodes(counter, 1) = id
                 resultEventLabels(counter, 1) = eventLabel
                 resultSegments(counter, 1) = segment
                 resultEventTotals(counter, 1) = eventTotal
+                resultEmails(counter, 1) = cell.Offset(0, 4)
             End If
-
+            If InStr(cell.Offset(0, 4), "irishlife") Then cell.EntireRow.Delete
         Next cell
         End If
     Next counter
@@ -110,5 +111,6 @@ Function parseDataString(inputData As String, delimiter As String) As String()
         parseDataString = returnVal
 
 End Function
+
 
 
