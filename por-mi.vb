@@ -1,38 +1,62 @@
 Sub cleanData()
 
-Dim startRange As Range, resultRange As Range, tmp As Variant, book As Object
-Dim sellerCodes As Range, idRange As Range, id As String, eventType As String, resultIDs As Range, resultNames As Range
+    Dim startRange As Range
+    Dim idRange As Range
+    Dim sellerCodes As Range
 
-Set book = Application.Workbooks("Point-of-Retirement-Reporting")
+    Dim tmp As Variant
 
-Set startRange = Application.Workbooks("POR - Usage_Events_Table").Worksheets(1).Range("A2:A207")
+    Dim id As String
+    Dim eventLabel As String
+    Dim email As String
+    Dim eventTotal As String
 
-Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
-Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
+    Dim resultIDs As Range
+    Dim resultNames As Range
+    Dim resultSellerCodes As Range
+    Dim resultEventLabels As Range
+    Dim resultSegments As Range
+    Dim resultEventTotals As Range
 
-Set resultIDs = book.Worksheets(1).Range("A2:A207")
-Set resultNames = book.Worksheets(1).Range("B2:B207")
-Set resultRange = book.Worksheets(1).Range("C2:D207")
+    Set startRange = Application.Workbooks("POR - Usage_Events_Table").Worksheets(1).Range("A2:A207")
 
-For counter = 1 To startRange.Count
+    Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
+    Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
 
-    ' Parse the initial string
-    tmp = parseDataString(startRange(counter, 1).Value, "-")
-    id = Trim(tmp(1))
-    For Each cell In idRange
-        If id = cell.Value Then
-            If InStr(idRange(counter, 1).Offset(0, 4), "irishlife.ie") > 0 Then Exit For
-            resultNames(counter, 1) = cell.Offset(0, 3)
-            resultIDs(counter, 1) = cell.Offset(0, 1)
-        End If
+    Set resultIDs = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("A2:A207")
+    Set resultNames = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("B2:B207")
+    Set resultSellerCodes = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("C2:C207")
+    Set resultEventLabels = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("D2:D207")
+    Set resultSegments = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("E2:E207")
+    Set resultEventTotals = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("E2:E207")
 
-    Next cell
+    For counter = 1 To startRange.Count
 
-    resultRange(counter, 1) = id
-    resultRange(counter, 2) = Trim(tmp(0))
-Next counter
+        ' Parse the initial string
+        tmp = parseDataString(startRange(counter, 1).Value, "-")
+        eventLabel = Trim(tmp(0))
+        id = Trim(tmp(1))
+        segment = Trim(tmp(2))
+        eventTotal = startRange(counter, 1).Offset(0, 4)
 
-Debug.Print "Finished!"
+        For Each cell In idRange
+            If id = cell.Value Then
+                email = idRange(counter, 1).Offset(0, 4)
+                If InStr(email, "irishlife.ie") > 0 Then Exit For
+
+                resultNames(counter, 1) = cell.Offset(0, 3)
+                resultIDs(counter, 1) = cell.Offset(0, 1)
+                resultSellerCodes(counter, 1) = id
+                resultEventLabels(counter, 1) = eventLabel
+                resultSegments(counter, 1) = segment
+                resultEventTotals(counter, 1) = eventTotal
+            End If
+
+        Next cell
+
+    Next counter
+
+    Debug.Print "Finished!"
 End Sub
 
 
