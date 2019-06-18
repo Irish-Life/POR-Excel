@@ -23,8 +23,8 @@ Sub cleanData()
     ' Initialise variables
     Set startRange = Application.Workbooks("POR - Usage_Events_Table").Worksheets(1).Range("A2:A316")
 
-    Set idRange = Application.Workbooks("user extract").Worksheets(1).Range("A2:A116738")
-    Set sellerCodes = Application.Workbooks("user extract").Worksheets(1).Range("B2:B116738")
+    Set idRange = Application.Workbooks("User_Extract").Worksheets(1).Range("A2:A116738")
+    Set sellerCodes = Application.Workbooks("User_Extract").Worksheets(1).Range("B2:B116738")
 
     Set resultIDs = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("A2:A316")
     Set resultNames = Application.Workbooks("Point-of-Retirement-Reporting").Worksheets(1).Range("B2:B316")
@@ -57,7 +57,6 @@ Sub cleanData()
                 resultEventTotals(counter, 1) = eventTotal
                 resultEmails(counter, 1) = cell.Offset(0, 4)
             End If
-            If InStr(cell.Offset(0, 4), "irishlife") Then cell.EntireRow.Delete
         Next cell
         End If
     Next counter
